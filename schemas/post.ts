@@ -45,6 +45,11 @@ export default defineType({
       type: 'datetime',
     }),
     defineField({
+      name: 'link',
+      title: 'Link',
+      type: 'url',
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
@@ -53,6 +58,20 @@ export default defineType({
       name: 'body',
       title: 'Body',
       type: 'blockContent',
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'tag'}],
+        },
+      ],
+      options: {
+        layout: 'tags',
+      },
     }),
   ],
 
