@@ -56,12 +56,49 @@ export default defineType({
         ],
       },
     }),
-    // You can add additional types here. Note that you can't use
-    // primitive types such as 'string' and 'number' in the same array
-    // as a block type.
+    /*
+     * An image in a body, with the three things the template default left out.
+     *
+     * Without them this member was a bare image: no alt, no caption, and no
+     * way to say how big it should be. A media-heavy page could not be
+     * expressed at all, which is why the old site's one case study was
+     * hand-written rather than authored here. A long write-up with real
+     * layout intent is better off in MDX on the consuming site — but an
+     * illustrated paragraph is not, and this is what it needs.
+     */
     defineArrayMember({
       type: 'image',
       options: {hotspot: true},
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt text',
+          type: 'string',
+          description: 'What the image shows, for anyone who cannot see it.',
+          validation: (Rule: any) =>
+            Rule.custom((alt: string | undefined) => (alt ? true : 'An image needs alt text.')),
+        },
+        {
+          name: 'caption',
+          title: 'Caption',
+          type: 'string',
+          description: 'Shown under the image. Optional.',
+        },
+        {
+          name: 'layout',
+          title: 'Layout',
+          type: 'string',
+          initialValue: 'default',
+          options: {
+            list: [
+              {title: 'Narrow — under half the column', value: 'narrow'},
+              {title: 'Default — the text column', value: 'default'},
+              {title: 'Wide — past the text column', value: 'wide'},
+              {title: 'Full bleed', value: 'full'},
+            ],
+          },
+        },
+      ],
     }),
   ],
 })
