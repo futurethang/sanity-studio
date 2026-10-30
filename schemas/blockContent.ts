@@ -75,8 +75,15 @@ export default defineType({
           title: 'Alt text',
           type: 'string',
           description: 'What the image shows, for anyone who cannot see it.',
+          /*
+           * A warning, not an error, for the same reason the tag spelling
+           * check is one: `post` bodies already contain images that predate
+           * this field, and a hard failure would block publishing every one
+           * of them until someone went back and filled it in. New images get
+           * nudged; old documents stay editable.
+           */
           validation: (Rule: any) =>
-            Rule.custom((alt: string | undefined) => (alt ? true : 'An image needs alt text.')),
+            Rule.custom((alt: string | undefined) => (alt ? true : 'An image needs alt text.')).warning(),
         },
         {
           name: 'caption',
